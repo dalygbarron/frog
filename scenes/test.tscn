@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/camera.gd" type="Script" id=1]
+[ext_resource path="res://parts/platform.tscn" type="PackedScene" id=2]
+[ext_resource path="res://parts/cunt.tscn" type="PackedScene" id=3]
+
+[sub_resource type="ProceduralSky" id=1]
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 11.79
+dof_blur_far_distance = 12.0
+dof_blur_far_quality = 2
+dof_blur_near_quality = 2
+
+[node name="root" type="Spatial"]
+
+[node name="platform" parent="." instance=ExtResource( 2 )]
+
+[node name="platform3" parent="." instance=ExtResource( 2 )]
+transform = Transform( 5.79176, 0, 0, 0, 0.862558, 2.2271, 0, -0.505958, 3.79676, 3.40401, 3.35065, 10.1289 )
+
+[node name="platform2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 5.23034, 0, -1.89056, 0, 1, 0, 2.48758, 0, 3.97507, -9.29353, -0.267315, -18.6931 )
+
+[node name="cunt" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.977218, 0 )
+
+[node name="camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.96669, 0.255952, 0, -0.255952, 0.96669, 0, 8.34666, 4.2459 )
+environment = SubResource( 2 )
+current = true
+script = ExtResource( 1 )
