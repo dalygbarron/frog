@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://misc/theme.tres" type="Theme" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+onready var smallText = load(\"res://knobs/smallText.tscn\")
+onready var inventoryKnob = load(\"res://knobs/inventory.tscn\")
+onready var noticeKnob = load(\"res://knobs/notice.tscn\")
+
+func display(knob: Knob, argument) -> Object:
+    get_tree().paused = true
+    add_child(knob)
+    knob.activate(argument)
+    knob.focus()
+    var result =  yield(knob, \"ended\")
+    remove_child(knob)
+    knob.queue_free()
+    var nChildren = get_child_count()
+    if nChildren == 0:
+        get_tree().paused = false
+    else:
+        var child := get_child(nChildren - 1) as Knob
+        if child: child.focus()
+    return result
+
+func say(text: String) -> void:
+    yield(display(smallText.instance(), text), \"completed\")
+
+func inventory(items: Array) -> Item:
+    return yield(display(inventoryKnob.instance(), items), \"completed\")
+
+func notice(text: String) -> void:
+    yield(display(noticeKnob.instance(), text), \"completed\")
+"
+
+[node name="gui" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}

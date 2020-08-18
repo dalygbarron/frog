@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/Item.gd" type="Script" id=1]
+[ext_resource path="res://pics/craneHook.png" type="Texture" id=2]
+[ext_resource path="res://pics/tapeCollection.png" type="Texture" id=3]
+[ext_resource path="res://pics/craneKey.png" type="Texture" id=4]
+[ext_resource path="res://pics/cheat.png" type="Texture" id=5]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+func _ready() -> void:
+    pass
+
+func getAllItems() -> Array:
+    return $items.get_children()
+"
+
+[node name="config" type="Node"]
+script = SubResource( 1 )
+
+[node name="items" type="Node" parent="."]
+
+[node name="craneHook" type="Node" parent="items"]
+script = ExtResource( 1 )
+displayName = "Red Hook"
+icon = ExtResource( 2 )
+
+[node name="tapeCollection" type="Node" parent="items"]
+script = ExtResource( 1 )
+displayName = "Tape Collection"
+icon = ExtResource( 3 )
+
+[node name="craneKey" type="Node" parent="items"]
+script = ExtResource( 1 )
+displayName = "Crane Key"
+icon = ExtResource( 4 )
+
+[node name="cheat" type="Node" parent="items"]
+script = ExtResource( 1 )
+displayName = "Cheat"
+icon = ExtResource( 5 )

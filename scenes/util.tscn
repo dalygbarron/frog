@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+const LINE_HOLDER = \"B!R!E!X!I!T!\"
+var lineCatcher = RegEx.new()
+var heldCatcher = RegEx.new()
+var whiteCatcher = RegEx.new()
+
+func _ready():
+    lineCatcher.compile(\"\\\\n\\\\n+\")
+    heldCatcher.compile(LINE_HOLDER)
+    whiteCatcher.compile(\"\\\\s\\\\s+\")
+
+func strip(text: String) -> String:
+    text = lineCatcher.sub(text, LINE_HOLDER, true)
+    text = whiteCatcher.sub(text, \" \", true)
+    return heldCatcher.sub(text, \"\\n\", true)
+
+func makeButton() -> Button:
+    var button = Button.new()
+    button.mouse_filter = Control.MOUSE_FILTER_IGNORE
+    return button
+"
+
+[node name="Node" type="Node"]
+script = SubResource( 1 )

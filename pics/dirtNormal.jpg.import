@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/rhonda.png-705b01aebdd31f3c07fdd085513c2628.s3tc.stex"
-path.etc2="res://.import/rhonda.png-705b01aebdd31f3c07fdd085513c2628.etc2.stex"
+path.s3tc="res://.import/dirtNormal.jpg-5051455df6f830498dab1f2957b7ba06.s3tc.stex"
+path.etc2="res://.import/dirtNormal.jpg-5051455df6f830498dab1f2957b7ba06.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://pics/rhonda.png"
-dest_files=[ "res://.import/rhonda.png-705b01aebdd31f3c07fdd085513c2628.s3tc.stex", "res://.import/rhonda.png-705b01aebdd31f3c07fdd085513c2628.etc2.stex" ]
+source_file="res://pics/dirtNormal.jpg"
+dest_files=[ "res://.import/dirtNormal.jpg-5051455df6f830498dab1f2957b7ba06.s3tc.stex", "res://.import/dirtNormal.jpg-5051455df6f830498dab1f2957b7ba06.etc2.stex" ]
 
 [params]
 
@@ -25,7 +25,7 @@ flags/repeat=true
 flags/filter=true
 flags/mipmaps=true
 flags/anisotropic=false
-flags/srgb=1
+flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false

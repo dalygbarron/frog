@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Knob
+
+const PROMPT = \"!!!\"
+
+func activate(arg) -> void:
+    assert(typeof(arg) == TYPE_STRING)
+    $vbox/text.text = Util.strip(arg)
+    $vbox/text.anchor_right = 1
+    $vbox/text.autowrap = true
+    yield($vbox/button, \"pressed\")
+    end(null)
+
+func focus() -> void:
+    $vbox/button.grab_focus()
+"
+
+[node name="small" type="PanelContainer"]
+margin_left = 256.0
+margin_top = 547.0
+margin_right = 768.0
+margin_bottom = 600.0
+grow_vertical = 0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbox" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 505.0
+margin_bottom = 46.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="text" type="Label" parent="vbox"]
+margin_right = 498.0
+margin_bottom = 14.0
+
+[node name="button" type="Button" parent="vbox"]
+margin_top = 18.0
+margin_right = 498.0
+margin_bottom = 38.0
+mouse_filter = 2
+text = "!!!"

@@ -1,35 +1,85 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/camera.gd" type="Script" id=1]
 [ext_resource path="res://parts/platform.tscn" type="PackedScene" id=2]
 [ext_resource path="res://parts/cunt.tscn" type="PackedScene" id=3]
+[ext_resource path="res://models/guy.glb" type="PackedScene" id=4]
 
-[sub_resource type="ProceduralSky" id=1]
+[sub_resource type="GDScript" id=1]
+script/source = "extends Spatial
 
-[sub_resource type="Environment" id=2]
+
+func _ready():
+    $guy/AnimationPlayer.get_animation(\"stretch\").loop = true
+    $guy/AnimationPlayer.play(\"stretch\")
+
+func _process(delta):
+    if Input.is_action_just_pressed(\"ui_accept\"):
+        yield(Gui.inventory(Config.getAllItems()), \"completed\")
+        yield(Gui.say(
+            \"\"\"Hello, my name is quite literally Brexit.
+
+            I am being paid £57 per hour to play this crappy
+            game and you are doing it for free!!!!
+            You are a fucking moron.
+
+            I get every hat that I own straight from the hat shop, and when
+            I put them on I feel the powar of a true hat man. A man who wears
+            a hat on his heart as well as his head.
+            A man with pride.\"\"\"
+        ), \"completed\")
+        yield(Gui.say(\"That will be all\"), \"completed\")
+        yield(Gui.say(\"That will be all 2\"), \"completed\")
+"
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_unshaded = true
+albedo_color = Color( 0.207843, 0.239216, 1, 1 )
+
+[sub_resource type="PlaneMesh" id=3]
+material = SubResource( 2 )
+size = Vector2( 500, 500 )
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="ProceduralSky" id=4]
+
+[sub_resource type="Environment" id=5]
 background_mode = 2
-background_sky = SubResource( 1 )
-ambient_light_color = Color( 1, 1, 1, 1 )
-ambient_light_energy = 11.79
+background_sky = SubResource( 4 )
 dof_blur_far_distance = 12.0
 dof_blur_far_quality = 2
 dof_blur_near_quality = 2
 
 [node name="root" type="Spatial"]
+script = SubResource( 1 )
+
+[node name="ocean" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -13.7194, 0 )
+visible = false
+mesh = SubResource( 3 )
+material/0 = null
 
 [node name="platform" parent="." instance=ExtResource( 2 )]
 
 [node name="platform3" parent="." instance=ExtResource( 2 )]
-transform = Transform( 5.79176, 0, 0, 0, 0.862558, 2.2271, 0, -0.505958, 3.79676, 3.40401, 3.35065, 10.1289 )
+transform = Transform( 5.79176, 0, 0, 0, 0.980928, -0.855574, 0, 0.194372, 4.31779, 5.77667, 0.446782, 10.1289 )
 
 [node name="platform2" parent="." instance=ExtResource( 2 )]
 transform = Transform( 5.23034, 0, -1.89056, 0, 1, 0, 2.48758, 0, 3.97507, -9.29353, -0.267315, -18.6931 )
 
-[node name="cunt" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.977218, 0 )
-
 [node name="camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.96669, 0.255952, 0, -0.255952, 0.96669, 0, 8.34666, 4.2459 )
-environment = SubResource( 2 )
+environment = SubResource( 5 )
 current = true
 script = ExtResource( 1 )
+
+[node name="guy" parent="." instance=ExtResource( 4 )]
+transform = Transform( 0.292908, 0, -0.523646, 0, 0.6, 0, 0.523646, 0, 0.292908, -8.99414, 6.16622, -19.325 )
+
+[node name="sun" type="DirectionalLight" parent="."]
+transform = Transform( 0.762403, -0.608464, -0.220257, 0.526698, 0.38575, 0.757486, -0.375939, -0.693519, 0.614574, 0, 42.8515, -0.649265 )
+shadow_enabled = true
+
+[node name="cunt" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 0.999861, -0.016702, 0, 0.016702, 0.999861, 0, 0.76987, 0 )

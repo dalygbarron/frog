@@ -1,0 +1,119 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://noise/open.wav" type="AudioStream" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Knob
+
+const PROMPT = \"!!!\"
+
+func activate(args):
+    assert(typeof(args) == TYPE_ARRAY)
+    $vbox/quit.connect(\"pressed\", self, \"click\", [$vbox/quit])
+    for arg in args:
+        var item := arg as Item
+        assert(item)
+        var button: Button = Util.makeButton()
+        button.icon = item.icon
+        $vbox/grid.add_child(button)
+        button.connect(\"pressed\", self, \"click\", [button])
+        var itemLink = item.duplicate()
+        button.add_child(itemLink)
+        itemLink.name = \"item\"
+    $anim.play(\"enter\")
+
+func focus() -> void:
+    if $vbox/grid.get_child_count() > 0:
+        var child := $vbox/grid.get_child(0) as Button
+        if child: child.grab_focus()
+    else:
+        $vbox/quit.grab_focus()
+
+func click(button: Button) -> void:
+    var item: Item = button.get_node(\"item\")
+    if not item:
+        $anim.play(\"exit\")
+        yield($anim, \"animation_finished\")
+        end(69)
+        return
+    Gui.notice(item.displayName)
+"
+
+[sub_resource type="InputEventAction" id=4]
+action = "ui_cancel"
+pressed = true
+
+[sub_resource type="ShortCut" id=5]
+shortcut = SubResource( 4 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "enter"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 128, 600 ), Vector2( 128, 100 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "exit"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 128, 100 ), Vector2( 128, -400 ) ]
+}
+
+[node name="inventory" type="PanelContainer"]
+margin_left = 128.0
+margin_top = 600.0
+margin_right = 896.0
+margin_bottom = 1000.0
+grow_vertical = 0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbox" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 761.0
+margin_bottom = 393.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="quit" type="Button" parent="vbox"]
+margin_right = 754.0
+margin_bottom = 20.0
+shortcut = SubResource( 5 )
+text = "^"
+
+[node name="grid" type="GridContainer" parent="vbox"]
+margin_top = 24.0
+margin_right = 754.0
+margin_bottom = 24.0
+columns = 8
+
+[node name="anim" type="AnimationPlayer" parent="."]
+anims/enter = SubResource( 2 )
+anims/exit = SubResource( 3 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+autoplay = true
