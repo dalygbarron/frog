@@ -4,7 +4,9 @@
 [ext_resource path="res://pics/frog.png" type="Texture" id=2]
 [ext_resource path="res://misc/theme.tres" type="Theme" id=3]
 [ext_resource path="res://pics/outline.png" type="Texture" id=4]
-[ext_resource path="res://songs/florida.ogg" type="AudioStream" id=5]
+[ext_resource path="res://bgs/florida.ogg" type="AudioStream" id=5]
+
+
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;

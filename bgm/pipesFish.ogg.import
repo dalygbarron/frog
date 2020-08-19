@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/pipesFish.ogg-7cb014ccfd9882383221302c40f029a3.oggstr"
+
+[deps]
+
+source_file="res://bgm/pipesFish.ogg"
+dest_files=[ "res://.import/pipesFish.ogg-7cb014ccfd9882383221302c40f029a3.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

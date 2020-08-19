@@ -1,35 +1,49 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/camera.gd" type="Script" id=1]
 [ext_resource path="res://parts/platform.tscn" type="PackedScene" id=2]
 [ext_resource path="res://parts/cunt.tscn" type="PackedScene" id=3]
 [ext_resource path="res://models/guy.glb" type="PackedScene" id=4]
+[ext_resource path="res://pics/buttons.png" type="Texture" id=5]
+[ext_resource path="res://pics/cheat.png" type="Texture" id=6]
+[ext_resource path="res://pics/craneHook.png" type="Texture" id=7]
+[ext_resource path="res://pics/craneKey.png" type="Texture" id=8]
+[ext_resource path="res://pics/tapeCollection.png" type="Texture" id=9]
+[ext_resource path="res://pics/lifeHolder.png" type="Texture" id=10]
+[ext_resource path="res://pics/frogEgg.png" type="Texture" id=11]
+[ext_resource path="res://pics/ant.png" type="Texture" id=12]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Spatial
 
+const MENU_RETURN = \"Return\"
+const MENU_SAVE_AND_CONTINUE = \"Save and Continue\"
+const MENU_SAVE_AND_QUIT = \"Save and Quit\"
+const MENU_OPTIONS = [
+    MENU_RETURN,
+    MENU_SAVE_AND_CONTINUE,
+    MENU_SAVE_AND_QUIT
+]
 
 func _ready():
     $guy/AnimationPlayer.get_animation(\"stretch\").loop = true
     $guy/AnimationPlayer.play(\"stretch\")
+    Audio.playBgs(\"florida\")
 
 func _process(delta):
-    if Input.is_action_just_pressed(\"ui_accept\"):
-        yield(Gui.inventory(Config.getAllItems()), \"completed\")
-        yield(Gui.say(
-            \"\"\"Hello, my name is quite literally Brexit.
-
-            I am being paid £57 per hour to play this crappy
-            game and you are doing it for free!!!!
-            You are a fucking moron.
-
-            I get every hat that I own straight from the hat shop, and when
-            I put them on I feel the powar of a true hat man. A man who wears
-            a hat on his heart as well as his head.
-            A man with pride.\"\"\"
-        ), \"completed\")
-        yield(Gui.say(\"That will be all\"), \"completed\")
-        yield(Gui.say(\"That will be all 2\"), \"completed\")
+    if Input.is_action_just_pressed(\"ui_game_menu\"):
+        yield(Gui.inventory(Config.get_all_items()), \"completed\")
+    elif Input.is_action_just_pressed(\"ui_program_menu\"):
+        var choice = yield(Gui.notice(\"Paused\", MENU_OPTIONS), \"completed\")
+        match MENU_OPTIONS[choice]:
+            MENU_RETURN:
+                return
+            MENU_SAVE_AND_CONTINUE:
+                yield(Gui.say(\"saved\"), \"completed\")
+                return
+            MENU_SAVE_AND_QUIT:
+                yield(Gui.say(\"saved now should wuit\"), \"completed\")
+                return
 "
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -83,3 +97,70 @@ shadow_enabled = true
 
 [node name="cunt" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 0.999861, -0.016702, 0, 0.016702, 0.999861, 0, 0.76987, 0 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 963.948, 54.5631 )
+texture = ExtResource( 5 )
+
+[node name="Node2D" type="Node2D" parent="CanvasLayer/Sprite"]
+
+[node name="Label" type="Label" parent="CanvasLayer/Sprite/Node2D"]
+margin_left = -88.0
+margin_top = -4.0
+margin_right = -19.0
+margin_bottom = 16.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 1 )
+custom_constants/shadow_as_outline = 1
+text = "Speak"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="CanvasLayer/Sprite/Node2D"]
+position = Vector2( -0.843811, -17.3777 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+
+[node name="Sprite2" type="Sprite" parent="CanvasLayer/Sprite/Node2D"]
+position = Vector2( 24.7531, 9.5809 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3" type="Sprite" parent="CanvasLayer/Sprite/Node2D"]
+position = Vector2( -36.2664, -31.2908 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 9 )
+
+[node name="Sprite4" type="Sprite" parent="CanvasLayer/Sprite/Node2D"]
+position = Vector2( 37.1749, -33.0986 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+
+[node name="lifeHolder" type="Sprite" parent="CanvasLayer"]
+texture = ExtResource( 10 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 120, 30 )
+
+[node name="life" type="Sprite" parent="CanvasLayer/lifeHolder"]
+texture = ExtResource( 11 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 90, 30 )
+
+[node name="lifeHolder2" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 15, 20 )
+texture = ExtResource( 10 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 90, 30 )
+
+[node name="bomb" type="Sprite" parent="CanvasLayer/lifeHolder2"]
+texture = ExtResource( 12 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 90, 30 )

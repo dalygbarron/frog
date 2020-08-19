@@ -5,7 +5,20 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Knob
 
-const PROMPT = \"!!!\"
+const MENU_OK = \"Ok Cool\"
+const MENU_USE = \"Use Now\"
+const MENU_B = \"Equip to B\"
+const MENU_Y = \"Equip to Y\"
+const MENU_L = \"Equip to L\"
+const MENU_R = \"Equip to R\"
+const MENU_OPTIONS = [
+    MENU_OK,
+    MENU_USE,
+    MENU_B,
+    MENU_Y,
+    MENU_L,
+    MENU_R
+]
 
 func activate(args):
     assert(typeof(args) == TYPE_ARRAY)
@@ -13,7 +26,7 @@ func activate(args):
     for arg in args:
         var item := arg as Item
         assert(item)
-        var button: Button = Util.makeButton()
+        var button: Button = Util.make_button()
         button.icon = item.icon
         $vbox/grid.add_child(button)
         button.connect(\"pressed\", self, \"click\", [button])
@@ -34,20 +47,35 @@ func click(button: Button) -> void:
     if not item:
         $anim.play(\"exit\")
         yield($anim, \"animation_finished\")
-        end(69)
+        end(null)
         return
-    Gui.notice(item.displayName)
+    var choice = yield(Gui.notice(
+        \"%s\\n%s\" % [item.displayName, item.description],
+        MENU_OPTIONS
+    ), \"completed\")
+    match MENU_OPTIONS[choice]:
+        MENU_OK:
+            return
+        MENU_USE:
+            return
+        MENU_B:
+            return
+        MENU_Y:
+            return
+        MENU_L:
+            return
+        MENU_R:
+            return
 "
 
-[sub_resource type="InputEventAction" id=4]
+[sub_resource type="InputEventAction" id=2]
 action = "ui_cancel"
 pressed = true
 
-[sub_resource type="ShortCut" id=5]
-shortcut = SubResource( 4 )
+[sub_resource type="ShortCut" id=3]
+shortcut = SubResource( 2 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "enter"
+[sub_resource type="Animation" id=4]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_position")
@@ -62,8 +90,7 @@ tracks/0/keys = {
 "values": [ Vector2( 128, 600 ), Vector2( 128, 100 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "exit"
+[sub_resource type="Animation" id=5]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:rect_position")
@@ -90,29 +117,31 @@ __meta__ = {
 }
 
 [node name="vbox" type="VBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 761.0
-margin_bottom = 393.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 760.0
+margin_bottom = 392.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="quit" type="Button" parent="vbox"]
-margin_right = 754.0
-margin_bottom = 20.0
-shortcut = SubResource( 5 )
+margin_right = 752.0
+margin_bottom = 36.0
+shortcut = SubResource( 3 )
 text = "^"
 
 [node name="grid" type="GridContainer" parent="vbox"]
-margin_top = 24.0
-margin_right = 754.0
-margin_bottom = 24.0
+margin_top = 40.0
+margin_right = 752.0
+margin_bottom = 40.0
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
 columns = 8
 
 [node name="anim" type="AnimationPlayer" parent="."]
-anims/enter = SubResource( 2 )
-anims/exit = SubResource( 3 )
+anims/enter = SubResource( 4 )
+anims/exit = SubResource( 5 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )

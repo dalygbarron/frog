@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scripts/Cunt.gd" type="Script" id=1]
+[ext_resource path="res://scripts/cunt.gd" type="Script" id=1]
 [ext_resource path="res://models/guy.glb" type="PackedScene" id=2]
 [ext_resource path="res://parts/dust.tscn" type="PackedScene" id=4]
 

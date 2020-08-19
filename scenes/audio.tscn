@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+var playingBgm: String = \"\"
+var playingBgs: String = \"\"
+
+func playBgm(bgm: String) -> void:
+    if bgm == playingBgm: return
+    playingBgm = bgm
+    var stream = load(\"res://bgm/%s.ogg\" % bgm)
+    $bgm.stream = stream
+    $bgm.play()
+
+func playBgs(bgs: String) -> void:
+    if bgs == playingBgs: return
+    playingBgs = bgs
+    var stream = load(\"res://bgs/%s.ogg\" % bgs)
+    $bgs.stream = stream
+    $bgs.play()
+
+func stopBgm() -> void:
+    $bgm.stop()
+
+func stopBgs() -> void:
+    $bgs.stop()
+
+func silence() -> void:
+    $bgm.stop()
+    $bgs.stop()
+"
+
+[node name="audio" type="Node"]
+pause_mode = 2
+script = SubResource( 1 )
+
+[node name="bgm" type="AudioStreamPlayer" parent="."]
+
+[node name="bgs" type="AudioStreamPlayer" parent="."]

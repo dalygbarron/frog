@@ -1,8 +1,31 @@
-[gd_scene load_steps=5 format=2]
-
-[ext_resource path="res://pics/shadow.png" type="Texture" id=1]
+[gd_scene load_steps=4 format=2]
 
 [sub_resource type="GDScript" id=1]
+script/source = "extends Knob
+
+func activate(arg) -> void:
+    assert(typeof(arg) == TYPE_DICTIONARY)
+    $vbox/text.text = Util.strip(arg[\"text\"])
+    $vbox/text.anchor_right = 1
+    $vbox/text.autowrap = true
+    for i in range(arg[\"options\"].size()):
+        var text := arg[\"options\"][i] as String
+        if not text: continue
+        var button: Button = Util.make_button()
+        button.text = text
+        button.connect(\"pressed\", self, \"click\", [i])
+        $vbox.add_child(button)
+    $anim.play(\"enter\")
+    yield($anim, \"animation_finished\")
+
+func focus() -> void:
+    $vbox.get_child(1).grab_focus()
+
+func click(index: int) -> void:
+    $anim.play(\"exit\")
+    yield($anim, \"animation_finished\")
+    end(index)
+"
 
 [sub_resource type="Animation" id=2]
 resource_name = "enter"
@@ -17,7 +40,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 256, 600 ), Vector2( 256, 200 ) ]
+"values": [ Vector2( 256, 600 ), Vector2( 256, 100 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -33,46 +56,34 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector2( 256, 200 ), Vector2( 256, -300 ) ]
+"values": [ Vector2( 256, 100 ), Vector2( 256, -300 ) ]
 }
 
 [node name="notice" type="PanelContainer"]
 margin_left = 256.0
-margin_top = 600.0
+margin_top = -300.0
 margin_right = 768.0
-margin_bottom = 653.0
+margin_bottom = -247.0
+grow_vertical = 2
 script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="vbox" type="VBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 505.0
-margin_bottom = 46.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 504.0
+margin_bottom = 45.0
+grow_vertical = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="text" type="Label" parent="vbox"]
-margin_right = 498.0
-margin_bottom = 14.0
-
-[node name="button" type="Button" parent="vbox"]
-margin_top = 18.0
-margin_right = 498.0
-margin_bottom = 38.0
-mouse_filter = 2
-text = "!!!"
+margin_right = 496.0
+margin_bottom = 20.0
 
 [node name="anim" type="AnimationPlayer" parent="."]
 anims/enter = SubResource( 2 )
 anims/exit = SubResource( 3 )
-
-[node name="Sprite" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.54902 )
-show_behind_parent = true
-position = Vector2( 251.185, 19.1119 )
-scale = Vector2( 30, 30 )
-texture = ExtResource( 1 )

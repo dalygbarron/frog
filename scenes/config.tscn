@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scripts/Item.gd" type="Script" id=1]
+[ext_resource path="res://scripts/item.gd" type="Script" id=1]
 [ext_resource path="res://pics/craneHook.png" type="Texture" id=2]
 [ext_resource path="res://pics/tapeCollection.png" type="Texture" id=3]
 [ext_resource path="res://pics/craneKey.png" type="Texture" id=4]
@@ -12,7 +12,7 @@ script/source = "extends Node
 func _ready() -> void:
     pass
 
-func getAllItems() -> Array:
+func get_all_items() -> Array:
     return $items.get_children()
 "
 
@@ -23,20 +23,24 @@ script = SubResource( 1 )
 
 [node name="craneHook" type="Node" parent="items"]
 script = ExtResource( 1 )
-displayName = "Red Hook"
+displayName = "Red Crane Hook"
 icon = ExtResource( 2 )
+description = "A hook used by the crane on Pipe City to connect it's rope to objects."
 
 [node name="tapeCollection" type="Node" parent="items"]
 script = ExtResource( 1 )
 displayName = "Tape Collection"
 icon = ExtResource( 3 )
+description = "A box for holding tapes left in the boat by it's previous owner. Contains some good stuff."
 
 [node name="craneKey" type="Node" parent="items"]
 script = ExtResource( 1 )
 displayName = "Crane Key"
 icon = ExtResource( 4 )
+description = "Used to open the crane on pipe city."
 
 [node name="cheat" type="Node" parent="items"]
 script = ExtResource( 1 )
-displayName = "Cheat"
+displayName = "Cheat Device"
 icon = ExtResource( 5 )
+description = "A device for cheating which you should not have unless you are on a secret mission from the gods. Requires mouse and keyboard since it's not for the masses to use."
