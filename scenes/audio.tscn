@@ -9,14 +9,14 @@ var playingBgs: String = \"\"
 func playBgm(bgm: String) -> void:
     if bgm == playingBgm: return
     playingBgm = bgm
-    var stream = load(\"res://bgm/%s.ogg\" % bgm)
+    var stream = load(bgm)
     $bgm.stream = stream
     $bgm.play()
 
 func playBgs(bgs: String) -> void:
     if bgs == playingBgs: return
     playingBgs = bgs
-    var stream = load(\"res://bgs/%s.ogg\" % bgs)
+    var stream = load(bgs)
     $bgs.stream = stream
     $bgs.play()
 

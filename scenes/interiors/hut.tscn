@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://scripts/level.gd" type="Script" id=1]
+[ext_resource path="res://scenes/parts/cat_door.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 5.0
+
+[sub_resource type="SpatialMaterial" id=2]
+params_cull_mode = 1
+
+[sub_resource type="CapsuleMesh" id=3]
+material = SubResource( 2 )
+radius = 5.0
+
+[sub_resource type="CylinderMesh" id=4]
+top_radius = 5.0
+bottom_radius = 5.0
+height = 0.1
+radial_segments = 10
+
+[sub_resource type="CylinderShape" id=5]
+radius = 5.0
+height = 0.1
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="walls" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="walls"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="walls"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="floor" type="StaticBody" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="floor"]
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="floor"]
+shape = SubResource( 5 )
+
+[node name="entrances" type="Spatial" parent="."]
+
+[node name="start" parent="entrances" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.00462, -3.31259 )

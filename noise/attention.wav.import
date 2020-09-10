@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/attention.wav-940f9b182126c8316b5d0ca70cf094d1.sample"
+
+[deps]
+
+source_file="res://noise/attention.wav"
+dest_files=[ "res://.import/attention.wav-940f9b182126c8316b5d0ca70cf094d1.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

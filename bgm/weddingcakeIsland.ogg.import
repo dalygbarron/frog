@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/weddingcakeIsland.ogg-91a6b2297043ba0f715af21cd8b2d84f.oggstr"
+
+[deps]
+
+source_file="res://bgm/weddingcakeIsland.ogg"
+dest_files=[ "res://.import/weddingcakeIsland.ogg-91a6b2297043ba0f715af21cd8b2d84f.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

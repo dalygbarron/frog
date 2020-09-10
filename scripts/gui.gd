@@ -1,6 +1,6 @@
 extends Control
 
-export var mod_increment = 0.3
+export var mod_increment: float = 0.3
 onready var small_text = preload("res://knobs/small_text.tscn")
 onready var inventory_knob = preload("res://knobs/inventory.tscn")
 onready var notice_knob = preload("res://knobs/notice.tscn")
@@ -10,8 +10,8 @@ func _ready() -> void:
 
 func display(knob: Knob, argument) -> Object:
     modulate_children(-mod_increment)
-    get_tree().paused = true
     add_child(knob)
+    get_tree().paused = knob.freeze
     knob.activate(argument)
     knob.focus()
     var result =  yield(knob, "ended")
@@ -23,7 +23,9 @@ func display(knob: Knob, argument) -> Object:
     else:
         modulate_children(mod_increment)
         var child := get_child(n_children - 1) as Knob
-        if child: child.focus()
+        if child:
+            child.focus()
+            get_tree().paused = child.freeze
     return result
 
 func say(text: String) -> void:

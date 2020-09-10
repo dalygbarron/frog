@@ -1,0 +1,12 @@
+Yeah this is what it is, not much unusual about it.
+
+Bullets will be rendered without nodes and collisions will be done first at bounding box level, then at perfect circle
+level. However, the bounding box level is gonna exclude 100% of bullets except when you are being shot or very almost
+shot, so who cares.
+
+You will enter the bullet screen via a nice black transition covering the screen, and when it goes away, it will have
+switched to bullet mode which will add black bars on either side of the screen for where you cannot go rather than
+having any ui on the sides of the screen, there will be nothing instead and your lives and stuff will appear within the
+battle area. The bad dudes will have a health circle thing like they did in spider engine or whatever it was called.
+
+

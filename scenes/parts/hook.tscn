@@ -1,0 +1,216 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://pics/hook.png" type="Texture" id=1]
+[ext_resource path="res://noise/cast.wav" type="AudioStream" id=2]
+[ext_resource path="res://pics/bubble.png" type="Texture" id=3]
+[ext_resource path="res://noise/ting.wav" type="AudioStream" id=4]
+[ext_resource path="res://noise/drop.wav" type="AudioStream" id=5]
+[ext_resource path="res://noise/reel.wav" type="AudioStream" id=6]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Area
+
+signal ended
+
+enum Status {
+    CASTING,
+    RETREIVING,
+    SITTING,
+    HITTING
+}
+
+const GRAVITY: float = -10.0
+const RETREIVE_TIME: float = 100.0
+const SIT_TIME = 10
+const MARGIN = 0.2
+var _velocity := Vector3(10, 1, 0)
+var _status = Status.CASTING
+var _timer: float = 0
+var _selected_fish: Fish.FishInstance = null
+var _hits = 0
+
+func _ready() -> void:
+    # TODO: take into account wind when casting
+    pass
+
+func _process(delta: float) -> void:
+    if Input.is_action_just_pressed(\"x\"):
+        if _status == Status.SITTING:
+            $reelSound.play()
+            $animation.play(\"start\")
+            _selected_fish = null
+            _timer = 0
+            _status = Status.RETREIVING
+        elif _status == Status.HITTING:
+            _human_hit()
+            if _hits >= _selected_fish.hit_threshold():
+                $animation.play(\"start\")
+                $fish.texture = _select_fish().type.texture
+                var size = _selected_fish.weight / _selected_fish.type.weight_average
+                $fish.scale.x = size
+                $fish.scale.y = size
+                $fish.scale.z = size
+                _status = Status.RETREIVING
+    if _timer > 0:
+        _timer -= delta
+        if _timer <= 0:
+            if _status == Status.SITTING:
+                _fish_hit()
+            elif _status == Status.HITTING:
+                if randf() < _selected_fish.type.timidity: _enter_sit()
+                else: _fish_hit()
+
+func _physics_process(delta: float) -> void:
+    if _status == Status.CASTING:
+        _velocity.y += delta * GRAVITY
+        translate(_velocity * delta)
+        if global_transform.origin.y <= State.get_water_level() + MARGIN:
+            _enter_sit()
+    elif _status == Status.RETREIVING:
+        translation = lerp(translation, Vector3(), delta * 2.0)
+        if translation.length() < 0.1:
+            hide()
+            queue_free()
+            emit_signal(\"ended\", _selected_fish)
+
+func _hit(body: PhysicsBody):
+    if body != get_parent() and not _selected_fish:
+        $hitSound.play()
+        _status = Status.RETREIVING
+
+func _enter_sit() -> void:
+    State.set_x_message(\"Reel In\")
+    $splashSound.play()
+    $splash.emitting = true
+    $animation.play(\"bob\")
+    _status = Status.SITTING
+    _selected_fish = _select_fish()
+    _timer = randf() * SIT_TIME
+    _hits = 0
+
+func _fish_hit() -> void:
+    State.set_x_message(\"Hit\")
+    $splashSound.play()
+    $splash.emitting = true
+    _status = Status.HITTING
+    _timer = randf() * _selected_fish.type.hit_time
+    if _hits > 0: _hits -= 1
+
+func _human_hit() -> void:
+    State.set_x_message(\"Hit\")
+    $reelSound.play()
+    _status = Status.HITTING
+    _timer = randf() * _selected_fish.type.hit_time
+    _hits += 1
+
+func _select_fish() -> Fish.FishInstance:
+    return Config.get_all_fishes()[0].create_instance()
+
+"
+
+[sub_resource type="SphereShape" id=2]
+radius = 0.31224
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 1
+emission_sphere_radius = 0.2
+direction = Vector3( 0, 1, 0 )
+initial_velocity = 7.0
+initial_velocity_random = 0.14
+scale = 0.3
+anim_speed = 3.0
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+params_billboard_mode = 3
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.98
+particles_anim_h_frames = 2
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="QuadMesh" id=5]
+material = SubResource( 4 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "bob"
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "start"
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[node name="hook" type="Area"]
+script = SubResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 2 )
+
+[node name="sprite" type="Sprite3D" parent="."]
+pixel_size = 0.04
+billboard = 1
+double_sided = false
+texture = ExtResource( 1 )
+hframes = 4
+
+[node name="fish" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.548806, 0 )
+pixel_size = 0.04
+billboard = 1
+double_sided = false
+alpha_cut = 2
+
+[node name="timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="splash" type="Particles" parent="."]
+emitting = false
+lifetime = 0.2
+one_shot = true
+process_material = SubResource( 3 )
+draw_pass_1 = SubResource( 5 )
+
+[node name="throwSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+autoplay = true
+
+[node name="splashSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+
+[node name="hitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="reelSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="animation" type="AnimationPlayer" parent="."]
+autoplay = "start"
+anims/bob = SubResource( 6 )
+anims/start = SubResource( 7 )
+[connection signal="body_entered" from="." to="." method="_hit"]

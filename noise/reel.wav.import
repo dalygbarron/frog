@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/reel.wav-3240e64f27e6ca8d56aaf3faafe3bd7d.sample"
+
+[deps]
+
+source_file="res://noise/reel.wav"
+dest_files=[ "res://.import/reel.wav-3240e64f27e6ca8d56aaf3faafe3bd7d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -69,6 +69,7 @@ script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+freeze = true
 
 [node name="vbox" type="VBoxContainer" parent="."]
 margin_left = 8.0

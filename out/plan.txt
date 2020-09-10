@@ -1,0 +1,76 @@
+The game starts with John Fogle, Aini and Purple Hat Man parting at the entrance to a sewer in Agara. Purple Hat Man is
+going to drive back to his castle, Aini is going back to Snake Parade to complete her degree in Eel Studies, and John
+Fogle just needs to escape ASAP because he has the most famous face of the three, and also he doesn't have anywhere in
+particular to go. The purple hat man mentions that his email is purplelegend69@cmail.com and that John can send him an
+email if he needs some money or help to get started with his new life and to keep in touch etc.
+
+Yeah so he goes through the sewers for a while which can constitute a basic tutorial, and then finally he finds a pipe
+leading out which you have to jump out of. You jump out of it and then you fall into the ocean. Then there is
+a cutscene of you fall into the ocean with a splash, then eventually showing you floating in the ocean, and some boat
+stopping by and finding you. We can make the cutscene nice but anyway, after a while you wake up surrounded by a few
+people on their boat.
+
+They are swamp people I guess but these particular ones live in a kind of convoy of boats tied together in the ocean,
+and they drift about the joint. You might do a few more tutorial bits while on these people's boats and have your first
+bullet hell moment with them, but after that is done, they drop you off at bagoon.
+
+It is a nice joint but you can't really do a whole lot initially because you have got no money and you are living in a
+tent. However, you can go to the library and use the computer. Also, if you talk to people who have good advice, they
+will say "you already smell like fish, you ought to buy a boat and become a professional fisherman or sea courier".
+Also, one of the shops where you currently cannot afford anything is the boat dealership, which is selling off an old
+piece of junk for $500. You need to email the purple hat man and ask him for $500 so that you can buy the boat.
+
+So emails are the way that you swap to what different characters are doing, so when you email the purple hat man it
+switches to playing as him. He receives the email at his computer and he is going to reply, but then the power at his
+castle goes out so he has to go and investigate. I will flesh out what happens to purple hat man at his castle more
+elsewhere but he will have a storyline that culimates in the events of purple castle and his castle will be destroyed
+and he will have to leave and thus will then bump into John Fogle. Yeah so he gets his computer working and sends John
+$500 which allows him to buy the boat and start having fun. He also says he sent your email address to Aini, but she
+doesn't email until you have driven in your boat because getting your boat money then immediately switching characters
+would suck.
+
+Then at the mouth of the harbor you also find that there is some kind of monster which has been blocking people from
+leaving. This is just an excuse to do your first bullet hell mostly.
+
+Ok that is the start of the game. Beyond this point you can basically do whatever you like.
+
+===========
+
+So what I initially want to do is get the game engine useful enough that it can implement everything stated here. Once
+I have done that I am gonna release the initial build. So in order to do that, what do we need to do to the engine?
+ - need to be able to make walls transparent if they are in front of you. Actually, if we need a hack, what we could do
+   is just make the interior wall block model things one sided so that you can see through them from the back. The only
+   issue is furniture and stuff will still be in the way, but this might be good enough so try it first. Also, we can
+   do the same thing with many furniture items assuming we can rotate them.
+ - Bullet hell
+ - Boat driving and basics of overworld (day/night cycle, tides)
+ - swapping between characters with different inventories etc.
+ - saving and loading.
+ - Fishing from land and boat.
+
+So with fishing what we will ahve is that every island will be given a different type of geographical classification
+such as reef, sandy island, rock island, man made. Hmm man made might fall under reef. Anyway when you fish near such
+places that helps to determine what kinds of fish will appear, as the current depth of the sea floor. Actually, the
+depth of the sea floor will be determined purely by distance from water features, so large flat areas will be created
+by a proliferation of minor features like trees.
+
+The depth of the sea floor is determined by the slope down from the nearest island.
+
+Spawning events will also randomly occur in different parts of the ocean which is where schools of fish start jumping
+to the surface which causes a higher chance of getting large predator fish.
+
+Maybe you will be able to set a hook size so you don't get small fish when you want large fish but I dunno.
+
+Bream, whiting -> caught in shallow places near man made structures.
+Crab, Octopus -> caught in shallow places with very low depth variance.
+Snapper, Pearl Perch, Rock Cod -> caught around reefs.
+Mackerel, Tuna -> caught in deep waters.
+
+After I have finished the basics I might include things like bait and hook customisation.
+
+I can also generate (for dev, not for players) heatmaps for each type of fish showing where they are most likely to be
+caught as a way of debugging that my logic for where to catch them is working correctly. Only painful thing is that we
+have to take multiple samples per place to detect variance in the depth so the number of samples is gonna be high. At
+least I can make it go at less than one pixel per meter. Maybe I can have an oversampling mode so you can do 1 pixel
+= 5 square meters, but it shows the average of 5 samples (as opposed to 25) taken from within the area for each pixel.
+

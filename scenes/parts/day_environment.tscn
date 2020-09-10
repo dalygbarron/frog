@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://pics/800trim.png" type="Texture" id=1]
+
+[sub_resource type="PanoramaSky" id=7]
+panorama = ExtResource( 1 )
+
+[sub_resource type="Environment" id=8]
+background_mode = 2
+background_sky = SubResource( 7 )
+fog_enabled = true
+fog_color = Color( 0, 0.254902, 0.243137, 1 )
+fog_depth_begin = 50.0
+fog_depth_end = 600.0
+dof_blur_near_distance = 5.51
+glow_bloom = 0.17
+glow_blend_mode = 0
+
+[node name="dayEnvironment" type="WorldEnvironment"]
+environment = SubResource( 8 )

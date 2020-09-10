@@ -24,47 +24,51 @@ func activate(args):
     assert(typeof(args) == TYPE_ARRAY)
     $vbox/quit.connect(\"pressed\", self, \"click\", [$vbox/quit])
     for arg in args:
-        var item := arg as Item
-        assert(item)
-        var button: Button = Util.make_button()
-        button.icon = item.icon
+        var holdable := arg as Holdable
+        assert(holdable)
+        var button: HoldableButton = HoldableButton.new(holdable)
         $vbox/grid.add_child(button)
         button.connect(\"pressed\", self, \"click\", [button])
-        var itemLink = item.duplicate()
-        button.add_child(itemLink)
-        itemLink.name = \"item\"
     $anim.play(\"enter\")
 
 func focus() -> void:
     if $vbox/grid.get_child_count() > 0:
-        var child := $vbox/grid.get_child(0) as Button
+        var child := $vbox/grid.get_child(0) as HoldableButton
         if child: child.grab_focus()
     else:
         $vbox/quit.grab_focus()
 
 func click(button: Button) -> void:
-    var item: Item = button.get_node(\"item\")
-    if not item:
+    var holdable_button: HoldableButton = button as HoldableButton
+    if not holdable_button:
         $anim.play(\"exit\")
         yield($anim, \"animation_finished\")
         end(null)
         return
+    var holdable := holdable_button.get_holdable()
     var choice = yield(Gui.notice(
-        \"%s\\n%s\" % [item.displayName, item.description],
+        \"%s\\n%s\" % [holdable.get_display_name(), holdable.get_description()],
         MENU_OPTIONS
     ), \"completed\")
     match MENU_OPTIONS[choice]:
         MENU_OK:
             return
         MENU_USE:
+            $anim.play(\"exit\")
+            yield($anim, \"animation_finished\")
+            end(holdable)
             return
         MENU_B:
+            State.set_b(holdable)
             return
         MENU_Y:
+            State.set_y(holdable)
             return
         MENU_L:
+            State.set_l(holdable)
             return
         MENU_R:
+            State.set_r(holdable)
             return
 "
 
@@ -115,6 +119,7 @@ script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+freeze = true
 
 [node name="vbox" type="VBoxContainer" parent="."]
 margin_left = 8.0
@@ -137,7 +142,7 @@ margin_right = 752.0
 margin_bottom = 40.0
 custom_constants/vseparation = 0
 custom_constants/hseparation = 0
-columns = 8
+columns = 10
 
 [node name="anim" type="AnimationPlayer" parent="."]
 anims/enter = SubResource( 4 )

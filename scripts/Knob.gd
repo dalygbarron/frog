@@ -1,8 +1,9 @@
+class_name Knob
 extends Node
 
-class_name Knob
-
 signal ended
+
+export(bool) var freeze = false
 
 func activate(arg) -> void:
     pass

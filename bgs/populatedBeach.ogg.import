@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/populatedBeach.ogg-dc75815690b95783f0c2edcd8b43b2b3.oggstr"
+
+[deps]
+
+source_file="res://bgs/populatedBeach.ogg"
+dest_files=[ "res://.import/populatedBeach.ogg-dc75815690b95783f0c2edcd8b43b2b3.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

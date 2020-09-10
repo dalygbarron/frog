@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/desertedBeach.ogg-a9e4da98d1f0726c34e08b5d51af68a5.oggstr"
+
+[deps]
+
+source_file="res://bgs/desertedBeach.ogg"
+dest_files=[ "res://.import/desertedBeach.ogg-a9e4da98d1f0726c34e08b5d51af68a5.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

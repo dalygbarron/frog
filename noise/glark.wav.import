@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/glark.wav-f382c338dc15be1260bb137d6c7ebd61.sample"
+
+[deps]
+
+source_file="res://noise/glark.wav"
+dest_files=[ "res://.import/glark.wav-f382c338dc15be1260bb137d6c7ebd61.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

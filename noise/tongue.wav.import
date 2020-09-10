@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/tongue.wav-f528fc0cc09fe3e7c9b1e17db22715cf.sample"
+
+[deps]
+
+source_file="res://noise/tongue.wav"
+dest_files=[ "res://.import/tongue.wav-f528fc0cc09fe3e7c9b1e17db22715cf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
