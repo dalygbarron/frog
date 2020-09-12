@@ -83,7 +83,7 @@ shader_param/uv2_offset = Vector3( 0, 0, 0 )
 
 [sub_resource type="CapsuleMesh" id=5]
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=6]
 metallic = 0.49
 roughness = 0.92
 normal_enabled = true
@@ -93,7 +93,7 @@ clearcoat_enabled = true
 clearcoat = 1.0
 clearcoat_gloss = 1.0
 
-[sub_resource type="CapsuleShape" id=6]
+[sub_resource type="CapsuleShape" id=7]
 
 [node name="root" type="Spatial"]
 script = SubResource( 1 )
@@ -202,7 +202,7 @@ transform = Transform( 1, 0, 0, 0, -0.844833, 0.535031, 0, -0.535031, -0.844833,
 
 [node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
 mesh = SubResource( 5 )
-material/0 = SubResource( 7 )
+material/0 = SubResource( 6 )
 
 [node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
-shape = SubResource( 6 )
+shape = SubResource( 7 )
