@@ -28,7 +28,6 @@ func handle_velocity(velocity: Vector3) -> void:
         ) + PI / 2
 
 func active_logic(delta: float) -> Vector3:
-    print(velocity)
     var camera = get_viewport().get_camera()
     var direction = Vector3()
     var jumpPower = 0
@@ -37,12 +36,13 @@ func active_logic(delta: float) -> Vector3:
         direction -= cameraTrans.basis[0] * Input.get_action_strength("left")
     if Input.is_action_pressed("right"):
         direction += cameraTrans.basis[0] * Input.get_action_strength("right")
-    if Input.is_action_pressed("forward"):
+    if Input.is_action_pressed("forward") and not Input.is_action_pressed("sneak"):
         direction -= cameraTrans.basis[2] * Input.get_action_strength("forward")
-    if Input.is_action_pressed("back"):
+    if Input.is_action_pressed("back") and not Input.is_action_pressed("sneak"):
         direction += cameraTrans.basis[2] * Input.get_action_strength("back")
     if Input.is_action_pressed("jump") and is_on_floor():
         jumpPower = jump
+        $up.pitch_scale = randf() * 0.2 + 0.9
         $up.play()
     if _sneaking and (not Input.is_action_pressed("sneak") or global_transform.origin.distance_to(closest.global_transform.origin) > sneak_length):
         _sneaking = false
@@ -63,7 +63,6 @@ func active_logic(delta: float) -> Vector3:
     direction.y = 0
     direction = direction.normalized() * speed
     direction.y = jumpPower
-    print(direction)
     return direction
 
 func interacting_logic(delta: float) -> Vector3:

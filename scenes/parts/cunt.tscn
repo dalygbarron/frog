@@ -5,7 +5,6 @@
 [ext_resource path="res://pics/stasbangoraKebabom.png" type="Texture" id=3]
 [ext_resource path="res://scripts/faceted_sprite.gd" type="Script" id=4]
 
-
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.590716
 height = 1.918
@@ -28,6 +27,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.08571, 0.0181361 )
 
 [node name="sound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
+
+[node name="step" type="AudioStreamPlayer" parent="."]
 
 [node name="sprite" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.154444, 0.0652608 )

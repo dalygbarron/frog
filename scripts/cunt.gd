@@ -55,9 +55,13 @@ func _physics_process(delta: float) -> void:
         _dust.emitting = true
 
 func handle_velocity(velocity: Vector3) -> void:
-    if abs(velocity.x) >= 0.01 or abs(velocity.z) >= 0.01:
+    if abs(velocity.x) >= 0.1 or abs(velocity.z) >= 0.1:
         rotation.y = atan2(velocity.x, velocity.z) - PI / 2
-        if _animation: _animation.play("walk")
+        if is_on_floor():
+            if _animation: _animation.play("walk")
+            if not $step.playing:
+                $step.pitch_scale = randf() * 0.2 + 0.9
+                $step.play()
 
 func active_logic(delta: float) -> Vector3:
     return Vector3()
