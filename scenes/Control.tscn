@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+func _ready():
+    $TextEdit.add_keyword_color(\"brexit\", Color.rebeccapurple)
+"
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_left = 151.0
+margin_top = 97.0
+margin_right = 557.0
+margin_bottom = 137.0
+syntax_highlighting = true
+[connection signal="text_changed" from="TextEdit" to="." method="_ready"]
