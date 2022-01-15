@@ -27,9 +27,9 @@ class FishInstance:
     var weight: float
     var _gender
 
-    func _init(type: Fish, weight: float, gender):
-        self.type = type
-        self.weight = weight
+    func _init(type_p: Fish, weight_p: float, gender):
+        type = type_p
+        weight = weight_p
         _gender = gender
 
     func hit_threshold():
@@ -43,33 +43,3 @@ class FishInstance:
 
     func get_fillet_count() -> int:
         return ceil(weight / type.fillet_size) as int
-
-    func to_holdable() -> FishHoldable:
-        return FishHoldable.new(self)
-
-class FishHoldable extends Holdable:
-    var fish_instance: FishInstance
-
-    func _init(fish_instance: FishInstance):
-        self.fish_instance = fish_instance
-
-    func get_display_name() -> String:
-        return fish_instance.get_display_name()
-
-    func get_technical_name() -> String:
-        return fish_instance.type.name
-
-    func get_tag():
-        return Holdable.Tag.ESKY
-
-    func get_icon() -> Texture:
-        return fish_instance.type.texture
-
-    func get_description() -> String:
-        return fish_instance.type.description
-
-    func get_active() -> bool:
-        return true
-
-    func get_verb() -> String:
-        return "Butcher"

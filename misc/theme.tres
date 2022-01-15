@@ -1,9 +1,9 @@
-[gd_resource type="Theme" load_steps=9 format=2]
+[gd_resource type="Theme" load_steps=8 format=2]
 
 [ext_resource path="res://misc/panel.tres" type="StyleBox" id=1]
 [ext_resource path="res://pics/button.png" type="Texture" id=2]
 [ext_resource path="res://pics/buttonHover.png" type="Texture" id=3]
-[ext_resource path="res://pics/buttonDepressed.png" type="Texture" id=4]
+[ext_resource path="res://misc/pressed_button.tres" type="StyleBox" id=4]
 [ext_resource path="res://misc/font.tres" type="DynamicFont" id=5]
 
 [sub_resource type="StyleBoxTexture" id=1]
@@ -26,30 +26,22 @@ margin_right = 8.0
 margin_top = 8.0
 margin_bottom = 8.0
 
-[sub_resource type="StyleBoxTexture" id=3]
-texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 24, 24 )
-margin_left = 8.0
-margin_right = 8.0
-margin_top = 8.0
-margin_bottom = 8.0
-
 [resource]
 default_font = ExtResource( 5 )
-Button/colors/font_color = Color( 0.101961, 0.129412, 0.12549, 1 )
-Button/colors/font_color_disabled = Color( 0.101961, 0.129412, 0.12549, 1 )
-Button/colors/font_color_hover = Color( 0.101961, 0.129412, 0.12549, 1 )
-Button/colors/font_color_pressed = Color( 0.101961, 0.129412, 0.12549, 1 )
+Button/colors/font_color = Color( 1, 0.772549, 0, 1 )
+Button/colors/font_color_disabled = Color( 1, 1, 1, 1 )
+Button/colors/font_color_focus = Color( 1, 1, 1, 1 )
+Button/colors/font_color_hover = Color( 1, 1, 1, 1 )
+Button/colors/font_color_pressed = Color( 1, 1, 1, 1 )
 Button/constants/hseparation = 8
 Button/fonts/font = null
-Button/styles/disabled = null
+Button/styles/disabled = ExtResource( 4 )
 Button/styles/focus = null
 Button/styles/hover = SubResource( 1 )
 Button/styles/normal = SubResource( 2 )
-Button/styles/pressed = SubResource( 3 )
+Button/styles/pressed = ExtResource( 4 )
 Label/colors/font_color = Color( 0.101961, 0.129412, 0.12549, 1 )
-Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
-Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+Label/colors/font_color_shadow = Color( 0.462745, 0.372549, 0.372549, 0 )
 Label/constants/line_spacing = 3
 Label/constants/shadow_as_outline = 0
 Label/constants/shadow_offset_x = 1

@@ -1,39 +1,32 @@
+# Represents an item that can be held in an inventory or somewhere.
+
+extends Resource
 class_name Item
-extends Node
 
-export(String) var display_name
-export(Texture) var icon: Texture
-export(String, MULTILINE) var description
-export(Holdable.Tag) var tag
-export(bool) var active = false
-export(String) var verb = "Use now"
+# Types of usage. None means it can't be used directly by the user. Menu means
+# it can be used directly from a menu by clicking it, and active means it can
+# be equipped by the user and used inside the game world.
+enum Usage {
+    NONE,
+    MENU,
+    ACTIVE    
+}
 
-func to_holdable() -> ItemHoldable:
-    return ItemHoldable.new(self)
+# Different tags holdables can be given to differentiate them.
+enum Tag {
+    MAIN,
+    TAPE,
+    ESKY
+}
 
-class ItemHoldable extends Holdable:
-    var _item: Item
+# User facing name for the item
+export(String) var display_name = "NA"
 
-    func _init(item: Item):
-        _item = item
+# Image to show for the item in guis and stuff
+export(Texture) var icon: Texture = null
 
-    func get_display_name() -> String:
-        return _item.display_name
+# Which defines how / where the item will be shown
+export(Tag) var tag = Tag.MAIN
 
-    func get_technical_name() -> String:
-        return _item.name
-
-    func get_tag():
-        return _item.tag
-
-    func get_icon() -> Texture:
-        return _item.icon
-
-    func get_description() -> String:
-        return _item.description
-
-    func get_active() -> bool:
-        return _item.description
-
-    func get_verb() -> String:
-        return _item.verb
+# Defines how the item can be used
+export(Usage) var usage = Usage.NONE

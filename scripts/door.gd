@@ -18,10 +18,10 @@ func static_logic(delta: float) -> Vector3:
 func look(at: Vector3, time: float) -> void:
     yield(Util.wait(time), "completed")
 
-func activate(player: Player, holdable: Holdable) -> void:
-    if holdable:
+func activate(player: Player, item: Item) -> void:
+    if item:
         yield(
-            Gui.say("%s does nothing here" % holdable.get_display_name()),
+            Gui.say("%s does nothing here" % item.get_display_name()),
             "completed"
         )
     else:

@@ -38,7 +38,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
     # actual physics
     var effective_gravity: float = gravity * \
-        (1 if velocity.y > 0 else downward_gravity_multiplier)
+        (1.0 if velocity.y > 0 else downward_gravity_multiplier)
     velocity.y += delta * effective_gravity
     var damp_effect = pow(damping, delta)
     velocity.x *= damp_effect
@@ -54,9 +54,9 @@ func _physics_process(delta: float) -> void:
         _dust.global_transform.origin = global_transform.origin + _dust_offset
         _dust.emitting = true
 
-func handle_velocity(velocity: Vector3) -> void:
-    if abs(velocity.x) >= 0.1 or abs(velocity.z) >= 0.1:
-        rotation.y = atan2(velocity.x, velocity.z) - PI / 2
+func handle_velocity(velocity_p: Vector3) -> void:
+    if abs(velocity_p.x) >= 0.1 or abs(velocity_p.z) >= 0.1:
+        rotation.y = atan2(velocity_p.x, velocity_p.z) - PI / 2
         if is_on_floor():
             if _animation: _animation.play("walk")
             if not $step.playing:
@@ -88,7 +88,6 @@ func voice() -> void:
     $sound.play()
 
 func look(at: Vector3, time: float) -> void:
-    var global_pos = global_transform.origin
     var start = rotation.y
     var delta = Util.short_angle(
         start,

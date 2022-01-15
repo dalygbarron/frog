@@ -1,19 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Knob
-
-func activate(arg) -> void:
-    assert(typeof(arg) == TYPE_STRING)
-    $vbox/text.text = Util.strip(arg)
-    $vbox/text.anchor_right = 1
-    $vbox/text.autowrap = true
-    yield($vbox/button, \"pressed\")
-    end(null)
-
-func focus() -> void:
-    $vbox/button.grab_focus()
-"
+[ext_resource path="res://knobs/small_text.gd" type="Script" id=1]
 
 [node name="small" type="PanelContainer"]
 margin_left = 256.0
@@ -21,7 +8,7 @@ margin_top = 547.0
 margin_right = 768.0
 margin_bottom = 600.0
 grow_vertical = 0
-script = SubResource( 1 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -13,10 +13,10 @@ script/source = "extends Area
 signal ended
 
 enum Status {
-    CASTING,
-    RETREIVING,
-    SITTING,
-    HITTING
+	CASTING,
+	RETREIVING,
+	SITTING,
+	HITTING
 }
 
 const GRAVITY: float = -10.0
@@ -30,81 +30,81 @@ var _selected_fish: Fish.FishInstance = null
 var _hits = 0
 
 func _ready() -> void:
-    # TODO: take into account wind when casting
-    pass
+	# TODO: take into account wind when casting
+	pass
 
 func _process(delta: float) -> void:
-    if Input.is_action_just_pressed(\"x\"):
-        if _status == Status.SITTING:
-            $reelSound.play()
-            $animation.play(\"start\")
-            _selected_fish = null
-            _timer = 0
-            _status = Status.RETREIVING
-        elif _status == Status.HITTING:
-            _human_hit()
-            if _hits >= _selected_fish.hit_threshold():
-                $animation.play(\"start\")
-                $fish.texture = _select_fish().type.texture
-                var size = _selected_fish.weight / _selected_fish.type.weight_average
-                $fish.scale.x = size
-                $fish.scale.y = size
-                $fish.scale.z = size
-                _status = Status.RETREIVING
-    if _timer > 0:
-        _timer -= delta
-        if _timer <= 0:
-            if _status == Status.SITTING:
-                _fish_hit()
-            elif _status == Status.HITTING:
-                if randf() < _selected_fish.type.timidity: _enter_sit()
-                else: _fish_hit()
+	if Input.is_action_just_pressed(\"x\"):
+		if _status == Status.SITTING:
+			$reelSound.play()
+			$animation.play(\"start\")
+			_selected_fish = null
+			_timer = 0
+			_status = Status.RETREIVING
+		elif _status == Status.HITTING:
+			_human_hit()
+			if _hits >= _selected_fish.hit_threshold():
+				$animation.play(\"start\")
+				$fish.texture = _select_fish().type.texture
+				var size = _selected_fish.weight / _selected_fish.type.weight_average
+				$fish.scale.x = size
+				$fish.scale.y = size
+				$fish.scale.z = size
+				_status = Status.RETREIVING
+	if _timer > 0:
+		_timer -= delta
+		if _timer <= 0:
+			if _status == Status.SITTING:
+				_fish_hit()
+			elif _status == Status.HITTING:
+				if randf() < _selected_fish.type.timidity: _enter_sit()
+				else: _fish_hit()
 
 func _physics_process(delta: float) -> void:
-    if _status == Status.CASTING:
-        _velocity.y += delta * GRAVITY
-        translate(_velocity * delta)
-        if global_transform.origin.y <= State.get_water_level() + MARGIN:
-            _enter_sit()
-    elif _status == Status.RETREIVING:
-        translation = lerp(translation, Vector3(), delta * 2.0)
-        if translation.length() < 0.1:
-            hide()
-            queue_free()
-            emit_signal(\"ended\", _selected_fish)
+	if _status == Status.CASTING:
+		_velocity.y += delta * GRAVITY
+		translate(_velocity * delta)
+		if global_transform.origin.y <= State.get_water_level() + MARGIN:
+			_enter_sit()
+	elif _status == Status.RETREIVING:
+		translation = lerp(translation, Vector3(), delta * 2.0)
+		if translation.length() < 0.1:
+			hide()
+			queue_free()
+			emit_signal(\"ended\", _selected_fish)
 
 func _hit(body: PhysicsBody):
-    if body != get_parent() and not _selected_fish:
-        $hitSound.play()
-        _status = Status.RETREIVING
+	if body != get_parent() and not _selected_fish:
+		$hitSound.play()
+		_status = Status.RETREIVING
 
 func _enter_sit() -> void:
-    State.set_x_message(\"Reel In\")
-    $splashSound.play()
-    $splash.emitting = true
-    $animation.play(\"bob\")
-    _status = Status.SITTING
-    _selected_fish = _select_fish()
-    _timer = randf() * SIT_TIME
-    _hits = 0
+	State.set_x_message(\"Reel In\")
+	$splashSound.play()
+	$splash.emitting = true
+	$animation.play(\"bob\")
+	_status = Status.SITTING
+	_selected_fish = _select_fish()
+	_timer = randf() * SIT_TIME
+	_hits = 0
 
 func _fish_hit() -> void:
-    State.set_x_message(\"Hit\")
-    $splashSound.play()
-    $splash.emitting = true
-    _status = Status.HITTING
-    _timer = randf() * _selected_fish.type.hit_time
-    if _hits > 0: _hits -= 1
+	State.set_x_message(\"Hit\")
+	$splashSound.play()
+	$splash.emitting = true
+	_status = Status.HITTING
+	_timer = randf() * _selected_fish.type.hit_time
+	if _hits > 0: _hits -= 1
 
 func _human_hit() -> void:
-    State.set_x_message(\"Hit\")
-    $reelSound.play()
-    _status = Status.HITTING
-    _timer = randf() * _selected_fish.type.hit_time
-    _hits += 1
+	State.set_x_message(\"Hit\")
+	$reelSound.play()
+	_status = Status.HITTING
+	_timer = randf() * _selected_fish.type.hit_time
+	_hits += 1
 
 func _select_fish() -> Fish.FishInstance:
-    return Config.get_all_fishes()[0].create_instance()
+	return Config.get_all_fishes()[0].create_instance()
 
 "
 
@@ -213,4 +213,5 @@ stream = ExtResource( 6 )
 autoplay = "start"
 anims/bob = SubResource( 6 )
 anims/start = SubResource( 7 )
+
 [connection signal="body_entered" from="." to="." method="_hit"]

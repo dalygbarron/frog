@@ -1,31 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Knob
-
-func activate(arg) -> void:
-    assert(typeof(arg) == TYPE_DICTIONARY)
-    $vbox/text.text = Util.strip(arg[\"text\"])
-    $vbox/text.anchor_right = 1
-    $vbox/text.autowrap = true
-    for i in range(arg[\"options\"].size()):
-        var text := arg[\"options\"][i] as String
-        if not text: continue
-        var button: Button = Util.make_button()
-        button.text = text
-        button.connect(\"pressed\", self, \"click\", [i])
-        $vbox.add_child(button)
-    $anim.play(\"enter\")
-    yield($anim, \"animation_finished\")
-
-func focus() -> void:
-    $vbox.get_child(1).grab_focus()
-
-func click(index: int) -> void:
-    $anim.play(\"exit\")
-    yield($anim, \"animation_finished\")
-    end(index)
-"
+[ext_resource path="res://knobs/notice.gd" type="Script" id=1]
 
 [sub_resource type="Animation" id=2]
 resource_name = "enter"
@@ -65,11 +40,10 @@ margin_top = -300.0
 margin_right = 768.0
 margin_bottom = -247.0
 grow_vertical = 2
-script = SubResource( 1 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-freeze = true
 
 [node name="vbox" type="VBoxContainer" parent="."]
 margin_left = 8.0

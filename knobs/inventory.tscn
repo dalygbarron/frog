@@ -1,76 +1,92 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://noise/open.wav" type="AudioStream" id=1]
+[ext_resource path="res://knobs/inventory.gd" type="Script" id=2]
+[ext_resource path="res://pics/bg.png" type="Texture" id=3]
+[ext_resource path="res://misc/wobble.tres" type="Material" id=4]
+[ext_resource path="res://pics/outline.png" type="Texture" id=5]
+[ext_resource path="res://pics/holder.png" type="Texture" id=6]
 
-[sub_resource type="GDScript" id=1]
-script/source = "extends Knob
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("panel:rect_position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 132, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("panel:rect_position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( -540, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
 
-const MENU_OK = \"Ok Cool\"
-const MENU_USE = \"Use Now\"
-const MENU_B = \"Equip to B\"
-const MENU_Y = \"Equip to Y\"
-const MENU_L = \"Equip to L\"
-const MENU_R = \"Equip to R\"
-const MENU_OPTIONS = [
-    MENU_OK,
-    MENU_USE,
-    MENU_B,
-    MENU_Y,
-    MENU_L,
-    MENU_R
-]
+[sub_resource type="Animation" id=5]
+resource_name = "enter"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("panel:rect_position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -540, -0.25, 0, 0.25, 0, 35, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
 
-func activate(args):
-    assert(typeof(args) == TYPE_ARRAY)
-    $vbox/quit.connect(\"pressed\", self, \"click\", [$vbox/quit])
-    for arg in args:
-        var holdable := arg as Holdable
-        assert(holdable)
-        var button: HoldableButton = HoldableButton.new(holdable)
-        $vbox/grid.add_child(button)
-        button.connect(\"pressed\", self, \"click\", [button])
-    $anim.play(\"enter\")
-
-func focus() -> void:
-    if $vbox/grid.get_child_count() > 0:
-        var child := $vbox/grid.get_child(0) as HoldableButton
-        if child: child.grab_focus()
-    else:
-        $vbox/quit.grab_focus()
-
-func click(button: Button) -> void:
-    var holdable_button: HoldableButton = button as HoldableButton
-    if not holdable_button:
-        $anim.play(\"exit\")
-        yield($anim, \"animation_finished\")
-        end(null)
-        return
-    var holdable := holdable_button.get_holdable()
-    var choice = yield(Gui.notice(
-        \"%s\\n%s\" % [holdable.get_display_name(), holdable.get_description()],
-        MENU_OPTIONS
-    ), \"completed\")
-    match MENU_OPTIONS[choice]:
-        MENU_OK:
-            return
-        MENU_USE:
-            $anim.play(\"exit\")
-            yield($anim, \"animation_finished\")
-            end(holdable)
-            return
-        MENU_B:
-            State.set_b(holdable)
-            return
-        MENU_Y:
-            State.set_y(holdable)
-            return
-        MENU_L:
-            State.set_l(holdable)
-            return
-        MENU_R:
-            State.set_r(holdable)
-            return
-"
+[sub_resource type="Animation" id=6]
+resource_name = "exit"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("panel:rect_position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 35, -0.25, 0, 0.25, 0, -540, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
 
 [sub_resource type="InputEventAction" id=2]
 action = "ui_cancel"
@@ -79,75 +95,115 @@ pressed = true
 [sub_resource type="ShortCut" id=3]
 shortcut = SubResource( 2 )
 
-[sub_resource type="Animation" id=4]
-length = 0.3
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 128, 600 ), Vector2( 128, 100 ) ]
-}
+[node name="bg" type="Sprite"]
+material = ExtResource( 4 )
+position = Vector2( 0, -1 )
+texture = ExtResource( 3 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1024, 600 )
+script = ExtResource( 2 )
 
-[sub_resource type="Animation" id=5]
-length = 0.3
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 128, 100 ), Vector2( 128, -400 ) ]
-}
+[node name="anim" type="AnimationPlayer" parent="."]
+autoplay = "enter"
+anims/RESET = SubResource( 4 )
+anims/enter = SubResource( 5 )
+anims/exit = SubResource( 6 )
 
-[node name="inventory" type="PanelContainer"]
-margin_left = 128.0
-margin_top = 600.0
-margin_right = 896.0
-margin_bottom = 1000.0
+[node name="panel" type="PanelContainer" parent="."]
+margin_left = 132.0
+margin_top = -540.0
+margin_right = 900.0
+margin_bottom = -10.0
 grow_vertical = 0
-script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-freeze = true
 
-[node name="vbox" type="VBoxContainer" parent="."]
+[node name="vbox" type="VBoxContainer" parent="panel"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 760.0
-margin_bottom = 392.0
+margin_bottom = 522.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="quit" type="Button" parent="vbox"]
+[node name="quit" type="Button" parent="panel/vbox"]
 margin_right = 752.0
 margin_bottom = 36.0
+shortcut_in_tooltip = false
 shortcut = SubResource( 3 )
 text = "^"
 
-[node name="grid" type="GridContainer" parent="vbox"]
+[node name="hbox" type="HBoxContainer" parent="panel/vbox"]
 margin_top = 40.0
 margin_right = 752.0
-margin_bottom = 40.0
+margin_bottom = 514.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="vbox" type="VBoxContainer" parent="panel/vbox/hbox"]
+margin_right = 143.0
+margin_bottom = 474.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="buttons" type="TextureRect" parent="panel/vbox/hbox/vbox"]
+margin_right = 143.0
+margin_bottom = 195.0
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 5
+
+[node name="l" type="Sprite" parent="panel/vbox/hbox/vbox/buttons"]
+position = Vector2( 45, 94 )
+
+[node name="r" type="Sprite" parent="panel/vbox/hbox/vbox/buttons"]
+position = Vector2( 98, 50 )
+
+[node name="save" type="Button" parent="panel/vbox/hbox/vbox"]
+margin_top = 199.0
+margin_right = 143.0
+margin_bottom = 235.0
+text = "Save and Continue"
+
+[node name="quit" type="Button" parent="panel/vbox/hbox/vbox"]
+margin_top = 239.0
+margin_right = 143.0
+margin_bottom = 275.0
+text = "Save and Quit"
+
+[node name="frog" type="TextureRect" parent="panel/vbox/hbox/vbox"]
+margin_top = 279.0
+margin_right = 143.0
+margin_bottom = 474.0
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+stretch_mode = 6
+
+[node name="panel" type="PanelContainer" parent="panel/vbox/hbox"]
+margin_left = 147.0
+margin_right = 752.0
+margin_bottom = 474.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="grid" type="GridContainer" parent="panel/vbox/hbox/panel"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 597.0
+margin_bottom = 466.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_constants/vseparation = 0
 custom_constants/hseparation = 0
-columns = 10
+columns = 5
 
-[node name="anim" type="AnimationPlayer" parent="."]
-anims/enter = SubResource( 4 )
-anims/exit = SubResource( 5 )
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="panel"]
 stream = ExtResource( 1 )
 autoplay = true
+
+[connection signal="pressed" from="panel/vbox/quit" to="." method="_on_quit_pressed"]

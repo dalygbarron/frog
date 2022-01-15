@@ -16,11 +16,6 @@ func strip(text: String) -> String:
     text = white_catcher.sub(text, " ", true)
     return held_catcher.sub(text, "\n", true)
 
-func make_button() -> Button:
-    var button: Button = Button.new()
-    button.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    return button
-
 func wait(time: float) -> void:
     var timer: Timer = null
     if timers.empty():

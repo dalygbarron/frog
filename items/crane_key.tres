@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://pics/craneKey.png" type="Texture" id=1]
+[ext_resource path="res://scripts/item.gd" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+display_name = "Crane Key"
+icon = ExtResource( 1 )
+tag = 0
+usage = 2
